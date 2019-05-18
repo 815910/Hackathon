@@ -38,6 +38,7 @@ public class Team29 extends JPanel {
 	private Timer timer;
 	private int ticks;
 	private double score;
+	private double bestY;
 
 	private Player player;
 	private List<DoodleBumper> DoodleBumpers;
@@ -139,11 +140,16 @@ public void printInfo() {
 				DoodleBumpers.get(DoodleBumpers.size()-1).setSpeed(bumperSpeed);
 			}
 			
-			for(int i = 0; i < DoodleBumpers.size(); i++) {
-				DoodleBumpers.get(i).move(HEIGHT, WIDTH);
-				if(DoodleBumpers.get(i).getY()>HEIGHT) {
-					DoodleBumpers.remove(i);
+			if(player.getY < bestY) {
+				for(int i = 0; i < DoodleBumpers.size(); i++) {
+					DoodleBumpers.get(i).move(HEIGHT, WIDTH, (int)((bestY - player.getY())/15));
+					if(DoodleBumper.get(i).getY() > HEIGHT) {
+						DoodleBumpers.remove(i);
+					}
 				}
+			}
+			
+			for(int i = 0; i < DoodleBumpers.size(); i++) {
 				player.Launch(WIDTH, HEIGHT, deltaTime, DoodleBumpers.get(i));
 			}
 
