@@ -49,7 +49,7 @@ public class Player extends GravityBall{
 	 * @param bottomEdge the bottom edge of the window
 	 * @param deltaTime the change in time
 	 */
-	public void Launch(int rightEdge, int bottomEdge, double deltaTime, DoodleBumper bumper) {
+	public void Launch(int rightEdge, int bottomEdge, double deltaTime, DoodleBumper bumper, int speed, int angle) {
 		setXSpeed(getXSpeed());
 		setYSpeed(getYSpeed());
 		
@@ -71,16 +71,17 @@ public class Player extends GravityBall{
 			//setRandomColor();
 		}
 		//Bottom Edge
-		if(getY()+radius>=bottomEdge) {
-			setYSpeed(getYSpeed()*(-1));
-			setY(bottomEdge-radius);
-			//setRandomColor();
-		}
+//		if(getY()+radius>=bottomEdge) {
+//			setYSpeed(getYSpeed()*(-1));
+//			setY(bottomEdge-radius);
+//			//setRandomColor();
+//		}
 		//Bumper
-		if(getY()+radius>=bumper.getY()&&getX()+radius>=bumper.getX()&&getX()-radius<=bumper.getX()+bumper.getWidth()) {
-			setYSpeed(getYSpeed()*(-1));
+		if(getY()-radius>=bumper.getY()-25&&getY()-radius<=bumper.getY()&&getX()+radius>=bumper.getX()&&getX()-radius<=bumper.getX()+bumper.getWidth()) {
+			setInitialVelocity(speed*2/4, angle);
 			setY(bumper.getY()-radius);
 		}
+
 		//Top
 		if(getY()-radius<=0) {
 			setYSpeed(getYSpeed()*(-1));
