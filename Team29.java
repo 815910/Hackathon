@@ -35,6 +35,7 @@ public class Team29 extends JPanel {
 	private BufferedImage image;
 //  private ImageIcon image1 = new ImageIcon(".jpg");
 	private Graphics g;
+	private bestY;
 	private Timer timer;
 
 	private Player player;
@@ -109,6 +110,10 @@ public class Team29 extends JPanel {
 			// draw background / clear screen
 			GraphicsUtilities.drawBackground(g, LIGHT_BLUE, WIDTH, HEIGHT);
 			player.Launch(WIDTH, HEIGHT, deltaTime, DoodleBumpers.get(0));
+			if(player.getY() > bestY) {
+				bestY = player.getY();
+			}
+			if(player.getY()
 			DoodleBumpers.get(0).move(HEIGHT, WIDTH);
 			player.draw(g);
 			DoodleBumpers.get(0).draw(g);
