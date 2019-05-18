@@ -27,15 +27,14 @@ public class Team29 extends JPanel {
 
 	private static final int WIDTH = 850;
 	private static final int HEIGHT = 1100;
-	private static final int playerSpeed = 20;
-	private static final int bumperSpeed = 10;
+	private static final int playerSpeed = 10;
+	private static final int bumperSpeed = 5;
 	private static final Color LIGHT_BLUE = new Color(108, 210, 247);
 	private static final int deltaTime = 10;
-	
+
 	private BufferedImage image;
-//  private ImageIcon image1 = new ImageIcon(".jpg");
+	//  private ImageIcon image1 = new ImageIcon(".jpg");
 	private Graphics g;
-	private bestY;
 	private Timer timer;
 
 	private Player player;
@@ -45,16 +44,20 @@ public class Team29 extends JPanel {
 
 	public Team29() {
 		DoodleBumpers = new ArrayList<DoodleBumper>();
-		DoodleBumpers.add(new DoodleBumper(WIDTH/2, HEIGHT-200));
-		DoodleBumpers.get(0).setSpeed(bumperSpeed);
+		for(int i = 0; i < 3; i++) {
+			DoodleBumpers.add(new DoodleBumper((int)(Math.random()*400+200), (int)(Math.random()*400+250)));
+			DoodleBumpers.get(i).setSpeed(bumperSpeed);
+		}
+
+		System.out.println(DoodleBumpers.get(0).getX());
 		player = new Player(WIDTH/2,HEIGHT-250,50,Color.green.darker());
 		player.setAcceleration(playerSpeed);
 		player.setInitialVelocity(500,90);
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
-		
+
 		player.draw(g);
-		
+
 		timer = new Timer(deltaTime, new TimerListener());
 		timer.start();
 		addKeyListener(new Keyboard());
@@ -89,10 +92,10 @@ public class Team29 extends JPanel {
 			// TODO Auto-generated method stub
 			if(e.getKeyCode()==KeyEvent.VK_LEFT) {
 				left=false;
-		}
+			}
 			if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
 				right=false;
-		}
+			}
 		}
 
 		@Override
@@ -109,14 +112,16 @@ public class Team29 extends JPanel {
 
 			// draw background / clear screen
 			GraphicsUtilities.drawBackground(g, LIGHT_BLUE, WIDTH, HEIGHT);
-			player.Launch(WIDTH, HEIGHT, deltaTime, DoodleBumpers.get(0));
-			if(player.getY() > bestY) {
-				bestY = player.getY();
+			
+			for(int i = 0; i < DoodleBumpers.size(); i++) {
+				DoodleBumpers.get(i).move(HEIGHT, WIDTH);
+				player.Launch(WIDTH, HEIGHT, deltaTime, DoodleBumpers.get(i));
 			}
-			if(player.getY()
-			DoodleBumpers.get(0).move(HEIGHT, WIDTH);
+
 			player.draw(g);
-			DoodleBumpers.get(0).draw(g);
+			for(int i = 0; i < DoodleBumpers.size(); i++) {
+				DoodleBumpers.get(i).draw(g);
+			}
 			updateMovement();
 			repaint();
 		}
