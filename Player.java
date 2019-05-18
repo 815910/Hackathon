@@ -48,7 +48,7 @@ public class Player extends GravityBall{
 	 */
 	public void Launch(int rightEdge, int bottomEdge, double deltaTime, DoodleBumper bumper) {
 		setXSpeed(getXSpeed());
-		setYSpeed(getYSpeed()+getAcceleration()*deltaTime);
+		setYSpeed(getYSpeed()+getAcceleration());
 		
 		setX(getX()+getXSpeed()*deltaTime/1000);
 		setY(getY()+getYSpeed()*deltaTime/1000);
