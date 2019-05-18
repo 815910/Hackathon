@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.swing.ImageIcon;
+
 public class DoodleBumper extends Bumper{
 	private int x;
 	private int y;
@@ -8,7 +10,6 @@ public class DoodleBumper extends Bumper{
 	private int height=20;
 	private Color color;
 	private int speed;
-	private int gravity=10;
 	
 	public DoodleBumper() {
 		this.x=0;
@@ -75,12 +76,9 @@ public class DoodleBumper extends Bumper{
 		g.setColor(color);
 		g.fillRect((int)x, (int)y, (int)width, (int)height);
 	}
-	public void move(int bottomEdge, int width, int distance) {
+	public void move(int bottomEdge, int width) {
 	
-		setY(getY()+ distance );
-		if(getY() > bottomEdge) {
-			setX((int)(Math.random()*width));
-			setY(0);
-		}
+		setY(getY()+getSpeed());
+		
 	}
 }
