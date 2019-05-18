@@ -27,7 +27,8 @@ public class Team29 extends JPanel {
 
 	private static final int WIDTH = 850;
 	private static final int HEIGHT = 1100;
-	private static final int SPEED = 20;
+	private static final int playerSpeed = 20;
+	private static final int bumperSpeed = 10;
 	private static final Color LIGHT_BLUE = new Color(108, 210, 247);
 	private static final int deltaTime = 10;
 	
@@ -44,8 +45,9 @@ public class Team29 extends JPanel {
 	public Team29() {
 		DoodleBumpers = new ArrayList<DoodleBumper>();
 		DoodleBumpers.add(new DoodleBumper(WIDTH/2, HEIGHT-200));
+		DoodleBumpers.get(0).setSpeed(bumperSpeed);
 		player = new Player(WIDTH/2,HEIGHT-250,50,Color.green.darker());
-		player.setAcceleration(SPEED);
+		player.setAcceleration(playerSpeed);
 		player.setInitialVelocity(500,90);
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
@@ -107,6 +109,7 @@ public class Team29 extends JPanel {
 			// draw background / clear screen
 			GraphicsUtilities.drawBackground(g, LIGHT_BLUE, WIDTH, HEIGHT);
 			player.Launch(WIDTH, HEIGHT, deltaTime, DoodleBumpers.get(0));
+			DoodleBumpers.get(0).move(HEIGHT, WIDTH);
 			player.draw(g);
 			DoodleBumpers.get(0).draw(g);
 			updateMovement();
