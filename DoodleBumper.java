@@ -76,11 +76,8 @@ public class DoodleBumper extends Bumper{
 		g.fillRect((int)x, (int)y, (int)width, (int)height);
 	}
 	public void move(int bottomEdge, int width, int distance) {
-	
-		setY(getY()+ distance );
-		if(getY() > bottomEdge) {
-			setX((int)(Math.random()*width));
-			setY(0);
-		}
+		
+		setY(getY()+distance);
+		
 	}
 }
