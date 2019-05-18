@@ -1,4 +1,3 @@
-
 import java.awt.Color;
 import java.awt.Graphics;
 
@@ -53,14 +52,17 @@ public class Player extends GravityBall{
 		
 		setX(getX()+getXSpeed()*deltaTime/1000);
 		setY(getY()+getYSpeed()*deltaTime/1000);
+		
 		if(getX()+radius>=rightEdge) {
 			setXSpeed(getXSpeed()*(-1));
-			setX(rightEdge-radius);
+			setX(0+(2*getRadius()));
+			System.out.println(getX());
 			//setRandomColor();
 		}
 		if(getX()-radius<=0) {
 			setXSpeed(getXSpeed()*(-1));
-			setX(radius);
+			setX(rightEdge-getRadius());
+			System.out.println(getX());
 			//setRandomColor();
 		}
 		if(getY()+radius>=bottomEdge) {
