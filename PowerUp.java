@@ -158,4 +158,12 @@ public class PowerUp {
 	public double distanceFrom(double x, double y) {
 		return(Math.pow(Math.pow((getX() - x), 2) + Math.pow((getY() - y), 2), 0.5));
 	}
+	
+	public boolean shield(BadGuy otherBadGuy) {
+		if (this.getRadius() + otherBadGuy.getRadius() >= distanceFrom(otherBadGuy.getX(), otherBadGuy.getY())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
