@@ -22,46 +22,92 @@ import javax.swing.Timer;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-
 @SuppressWarnings("serial")
 public class Team29 extends JPanel {
-	
+
 	private static final int WIDTH = 850;
 	private static final int HEIGHT = 1100;
-	private static final int SPEED = 10;
-private static final Color LIGHT_BLUE = new Color(108, 210, 247);
+	private static final int ACCEL = 2;
+	private static final int moveSpeed = 50;
+	private static final Color LIGHT_BLUE = new Color(108, 210, 247);
+	private static final int deltaTime = 10;
 	
 	private BufferedImage image;
 //  private ImageIcon image1 = new ImageIcon(".jpg");
 	private Graphics g;
 	private Timer timer;
-	
-	private Player player;
-    private List <DoodleBumper> DoodleBumpers;
-	
-	
-	public Team29() {
-		DoodleBumpers = new ArrayList <DoodleBumper>();
 
-image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	private Player player;
+	private List<DoodleBumper> DoodleBumpers;
+
+	private boolean left, right;
+
+	public Team29() {
+		DoodleBumpers = new ArrayList<DoodleBumper>();
+		DoodleBumpers.add(new DoodleBumper(WIDTH/2,HEIGHT-300));
+		player = new Player(WIDTH/2,HEIGHT-250,50,Color.green.darker());
+		player.setAcceleration(ACCEL);
+		player.setInitialVelocity(400,90);
+		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
 		
-		DoodleBumpers.add(new DoodleBumper((int)(
+		player.draw(g);
 		
-
+		timer = new Timer(deltaTime, new TimerListener());
+		timer.start();
+		addKeyListener(new Keyboard());
+		setFocusable(true);
 	}
-private class TimerListener implements ActionListener {
+
+	public void updateMovement() {
+		if (left) {
+			player.setXSpeed(player.getXSpeed()-moveSpeed);
+		}
+		if (right) {
+			player.setXSpeed(player.getXSpeed()+moveSpeed);
+		}
+	}
+
+	private class Keyboard implements KeyListener {
+		public void keyPressed(KeyEvent e) {
+			// TODO Auto-generated method stub
+			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				left = true;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				right = true;
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+	}
+
+	private class TimerListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
 			// draw background / clear screen
 			GraphicsUtilities.drawBackground(g, LIGHT_BLUE, WIDTH, HEIGHT);
-
+			player.move(deltaTime);
+			player.draw(g);
 			updateMovement();
-}
-}
-		public void paintComponent(Graphics g) {
+			repaint();
+		}
+
+	}
+
+	public void paintComponent(Graphics g) {
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 	}
 
@@ -69,12 +115,10 @@ private class TimerListener implements ActionListener {
 
 		JFrame frame = new JFrame("Team 29");
 		frame.setSize(WIDTH, HEIGHT);
-		frame.setLocation(600, 0);
+		frame.setLocation(540, 0);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(new Team29());
 		frame.setVisible(true);
 	}
 
 }
-
-
