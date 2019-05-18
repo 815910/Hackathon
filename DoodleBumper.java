@@ -76,9 +76,9 @@ public class DoodleBumper extends Bumper{
 		g.setColor(color);
 		g.fillRect((int)x, (int)y, (int)width, (int)height);
 	}
-	public void move(int bottomEdge, int width) {
+	public void move(int bottomEdge, int width, int distance) {
 	
-		setY(getY()+getSpeed());
+		setY(getY()+distance);
 		
 	}
 }
