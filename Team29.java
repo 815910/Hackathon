@@ -27,7 +27,7 @@ public class Team29 extends JPanel {
 
 	private static final int WIDTH = 850;
 	private static final int HEIGHT = 1100;
-	private static final int playerSpeed = 10;
+	private static final int playerSpeed = 200;
 	private static final int bumperSpeed = 5;
 	private static final Color LIGHT_BLUE = new Color(108, 210, 247);
 	private static final int deltaTime = 10;
@@ -36,6 +36,7 @@ public class Team29 extends JPanel {
 	//  private ImageIcon image1 = new ImageIcon(".jpg");
 	private Graphics g;
 	private Timer timer;
+	private int ticks;
 
 	private Player player;
 	private List<DoodleBumper> DoodleBumpers;
@@ -44,15 +45,14 @@ public class Team29 extends JPanel {
 
 	public Team29() {
 		DoodleBumpers = new ArrayList<DoodleBumper>();
-		for(int i = 0; i < 3; i++) {
-			DoodleBumpers.add(new DoodleBumper((int)(Math.random()*400+200), (int)(Math.random()*400+250)));
+		for(int i = 0; i < 5; i++) {
+			DoodleBumpers.add(new DoodleBumper((int)(Math.random()*800+100), (int)(Math.random()*400+250)));
 			DoodleBumpers.get(i).setSpeed(bumperSpeed);
 		}
 
 		System.out.println(DoodleBumpers.get(0).getX());
 		player = new Player(WIDTH/2,HEIGHT-250,50,Color.green.darker());
-		player.setAcceleration(playerSpeed);
-		player.setInitialVelocity(500,90);
+		player.setInitialVelocity(playerSpeed,90);
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
 
@@ -113,6 +113,10 @@ public class Team29 extends JPanel {
 			// draw background / clear screen
 			GraphicsUtilities.drawBackground(g, LIGHT_BLUE, WIDTH, HEIGHT);
 			
+			if(ticks%75 == 0) {
+				DoodleBumpers.add(new DoodleBumper((int)(Math.random()*800+100), -200));
+				DoodleBumpers.get(DoodleBumpers.size()-1).setSpeed(bumperSpeed);
+			}
 			for(int i = 0; i < DoodleBumpers.size(); i++) {
 				DoodleBumpers.get(i).move(HEIGHT, WIDTH);
 				player.Launch(WIDTH, HEIGHT, deltaTime, DoodleBumpers.get(i));
@@ -123,6 +127,8 @@ public class Team29 extends JPanel {
 				DoodleBumpers.get(i).draw(g);
 			}
 			updateMovement();
+			System.out.println(player.getYSpeed());
+			ticks++;
 			repaint();
 		}
 
