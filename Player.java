@@ -1,10 +1,13 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.swing.ImageIcon;
+
 public class Player extends GravityBall{
 	private double acceleration;
 	private double diameter;
 	private double radius;
+	private ImageIcon Doodle = new ImageIcon("DoodleJump.png");
 	/**
 	 * Creates a GravityBall with center at x,y with a diameter and color
 	 * that the user inputs
@@ -48,32 +51,37 @@ public class Player extends GravityBall{
 	 */
 	public void Launch(int rightEdge, int bottomEdge, double deltaTime, DoodleBumper bumper) {
 		setXSpeed(getXSpeed());
-		setYSpeed(getYSpeed()+getAcceleration());
+		setYSpeed(getYSpeed());
 		
 		setX(getX()+getXSpeed()*deltaTime/1000);
 		setY(getY()+getYSpeed()*deltaTime/1000);
 		
+		//RightEdge
 		if(getX()+radius>=rightEdge) {
 			setXSpeed(getXSpeed()*(-1));
 			setX(0+(2*getRadius()));
 			System.out.println(getX());
 			//setRandomColor();
 		}
+		//Left Edge
 		if(getX()-radius<=0) {
 			setXSpeed(getXSpeed()*(-1));
-			setX(rightEdge-getRadius());
+			setX(rightEdge-(2*getRadius()));
 			System.out.println(getX());
 			//setRandomColor();
 		}
+		//Bottom Edge
 		if(getY()+radius>=bottomEdge) {
 			setYSpeed(getYSpeed()*(-1));
 			setY(bottomEdge-radius);
 			//setRandomColor();
 		}
+		//Bumper
 		if(getY()+radius>=bumper.getY()&&getX()+radius>=bumper.getX()&&getX()-radius<=bumper.getX()+bumper.getWidth()) {
 			setYSpeed(getYSpeed()*(-1));
 			setY(bumper.getY()-radius);
 		}
+		//Top
 		if(getY()-radius<=0) {
 			setYSpeed(getYSpeed()*(-1));
 			setY(radius);
@@ -85,5 +93,6 @@ public class Player extends GravityBall{
 	 */
 	public void draw(Graphics g) {
 		super.draw(g);
+		g.drawImage(Doodle.getImage(), (int)(getX()-getRadius()-5), (int)(getY()-(2*getRadius())), (int)(getDiameter()*2), (int)(2*getDiameter()), null);
 	}
 }
