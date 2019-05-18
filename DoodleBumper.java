@@ -1,79 +1,79 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class DoodleBumper {
-	private double x;
-	private double y;
-	private double width=100;
-	private double height=20;
+public class DoodleBumper extends Bumper{
+	private int x;
+	private int y;
+	private int width=100;
+	private int height=20;
 	private Color color;
-	private double speed;
-	private double gravity=10;
+	private int speed;
+	private int gravity=10;
 	
 	public DoodleBumper() {
-		this.x=0.0;
-		this.y=0.0;
+		this.x=0;
+		this.y=0;
 		this.color=(Color.green);
 		this.speed=0;
 	}
-	public DoodleBumper(double x, double y) {
+	public DoodleBumper(int x, int y) {
 		this.x=x;
 		this.y=y;
-		this.color=(Color.green);
+		this.color=(Color.green.darker());
 		this.speed=0;
 	}
-	public DoodleBumper(double x, double y, double speed) {
+	public DoodleBumper(int x, int y, int speed) {
 		this.x=x;
 		this.y=y;
 		this.color=(Color.blue.brighter());
 		this.speed=speed;
 	}
-	public void setX(double x) {
+	public void setX(int x) {
 		this.x=x;
 	}
 	/**
 	 * returns the x
 	 * @return x the x-coordinate middle of the ball
 	 */
-	public double getX() {
+	public int getX() {
 		return x;
 	}
 	/**
 	 * sets the y-coordinate of the middle of the ball
 	 * @param y the y-coordinate of the middle of the ball
 	 */
-	public void setY(double y) {
+	public void setY(int y) {
 		this.y=y;
 	}
 	/**
 	 * returns the y coordinate of the middle of the ball
 	 * @return y the y coordinate of the middle of the ball
 	 */
-	public double getY() {
+	public int getY() {
 		return y;
 	}
-	public void setSpeed(double speed) {
+	public void setSpeed(int speed) {
 		this.speed=speed;
 	}
-	public double getSpeed() {
+	public int getSpeed() {
 		return speed;
 	}
-	public void setGravity(double gravity) {
+	public void setGravity(int gravity) {
 		this.gravity=gravity;
 	}
-	public double getGravity() {
+	public int getGravity() {
 		return gravity;
 	}
-	public void setHeight(double height) {
+	public void setHeight(int height) {
 		this.height=height;
 	}
-	public double getHeight() {
+	public int getHeight() {
 		return height;
 	}
-	public void setWidth(double width) {
+	public void setWidth(int width) {
 		this.width=width;
 	}
-	public double getWidth() {
+	public int getWidth() {
 		return width;
 	}
 	public void draw(Graphics g) {
