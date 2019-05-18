@@ -58,12 +58,7 @@ public class DoodleBumper extends Bumper{
 	public int getSpeed() {
 		return speed;
 	}
-	public void setGravity(int gravity) {
-		this.gravity=gravity;
-	}
-	public int getGravity() {
-		return gravity;
-	}
+
 	public void setHeight(int height) {
 		this.height=height;
 	}
@@ -80,11 +75,12 @@ public class DoodleBumper extends Bumper{
 		g.setColor(color);
 		g.fillRect((int)x, (int)y, (int)width, (int)height);
 	}
-	public void move(int leftEdge, int rightEdge) {
-		setX(getX()+getSpeed());
-		setY(getY()+getGravity());
-		if(getX()<=leftEdge||getX()+getWidth()>=rightEdge) {
-			setSpeed(getSpeed()*-1);
+	public void move(int bottomEdge, int width) {
+	
+		setY(getY()+getSpeed());
+		if(getY() > bottomEdge) {
+			setX((int)(Math.random()*width));
+			setY(0);
 		}
 	}
 }
