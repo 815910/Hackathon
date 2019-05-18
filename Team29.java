@@ -33,11 +33,9 @@ public class Team29 extends JPanel {
 	private static final int deltaTime = 10;
 
 	private BufferedImage image;
-	//  private ImageIcon image1 = new ImageIcon(".jpg");
 	private Graphics g;
 	private Timer timer;
 	private int ticks;
-	private int bestY;
 
 	private Player player;
 	private List<DoodleBumper> DoodleBumpers;
@@ -114,19 +112,18 @@ public class Team29 extends JPanel {
 			// draw background / clear screen
 			GraphicsUtilities.drawBackground(g, LIGHT_BLUE, WIDTH, HEIGHT);
 			
-			if(ticks%75 == 0) {
+			if(ticks%30 == 0) {
 				DoodleBumpers.add(new DoodleBumper((int)(Math.random()*800+100), -200));
 				DoodleBumpers.get(DoodleBumpers.size()-1).setSpeed(bumperSpeed);
 			}
-				
-			if(player.getY() > bestY) {
-				bestY = player.getY();
-				for(int i = 0; i < DoodleBumpers.size(); i++) {
-					DoodleBumpers.get(i).move(HEIGHT, WIDTH, (int)(player.getY() - bestY));
-					player.Launch(WIDTH, HEIGHT, deltaTime, DoodleBumpers.get(i));
-				}
-			}
 			
+			for(int i = 0; i < DoodleBumpers.size(); i++) {
+				DoodleBumpers.get(i).move(HEIGHT, WIDTH);
+				if(DoodleBumpers.get(i).getY()>HEIGHT) {
+					DoodleBumpers.remove(i);
+				}
+				player.Launch(WIDTH, HEIGHT, deltaTime, DoodleBumpers.get(i));
+			}
 
 			player.draw(g);
 			for(int i = 0; i < DoodleBumpers.size(); i++) {
