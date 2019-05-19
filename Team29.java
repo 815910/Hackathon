@@ -24,12 +24,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 @SuppressWarnings("serial")
-public class Team29 extends JPanel {
+public class Team29WithDie extends JPanel {
 
 	private static final int WIDTH = 850;
 	private static final int HEIGHT = 1100;
-	private static final int playerSpeed = 50;
-	private static final int bumperSpeed = 25;
+	private static final int playerSpeed = 10;
+	private static final int bumperSpeed = 50;
 	private static final Color LIGHT_BLUE = new Color(108, 210, 247);
 	private static final int deltaTime = 7;
 
@@ -44,17 +44,18 @@ public class Team29 extends JPanel {
 	private List<DoodleBumper> DoodleBumpers;
 
 	private boolean left, right;
+	private boolean die = false;
 
-	public Team29() {
+	public Team29WithDie() {
 		DoodleBumpers = new ArrayList<DoodleBumper>();
-		for(int i = 0; i < 5; i++) {
-			DoodleBumpers.add(new DoodleBumper((int)(Math.random()*800+100), (int)(Math.random()*400+250)));
-			
+		for (int i = 0; i < 5; i++) {
+			DoodleBumpers.add(new DoodleBumper((int) (Math.random() * 800 + 100), (int) (Math.random() * 400 + 250)));
+
 		}
 
 		System.out.println(DoodleBumpers.get(0).getX());
-		player = new Player(WIDTH/2,HEIGHT-250,50,Color.green.darker());
-		player.setInitialVelocity(bumperSpeed,90);
+		player = new Player(WIDTH / 2, HEIGHT - 250, 50, Color.green.darker());
+		player.setInitialVelocity(bumperSpeed, 90);
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		g = image.getGraphics();
 
@@ -68,53 +69,70 @@ public class Team29 extends JPanel {
 
 	public void updateMovement() {
 		if (left) {
-			player.setX(player.getX()-20);
+			player.setX(player.getX() - 20);
 		}
 		if (right) {
-			player.setX(player.getX()+20);
+			player.setX(player.getX() + 20);
 		}
-		if (!left&&!right) {
+		if (!left && !right) {
 			player.setXSpeed(0);
 		}
 	}
-	
+
 	public Boolean checkDie() {
-		if(player.getY()>HEIGHT) {
+		if (player.getY() > HEIGHT) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
-	
+
 	public void end() {
-		if(checkDie()) {
+		if (checkDie()) {
 			g.setColor(Color.BLACK);
 			g.setFont(new Font("Tahoma", Font.BOLD, 40));
-			g.drawString("Game Over", WIDTH/2, HEIGHT/2-HEIGHT/3);
+			g.drawString("Game Over", WIDTH / 2, HEIGHT / 2 - HEIGHT / 3);
+			g.drawString("Press R to restart", WIDTH / 2, HEIGHT / 2 - HEIGHT / 4);
+			die = true;
 			timer.stop();
 		}
 	}
-	
-public void printInfo() {
-		
-		
-		
+
+	public void printInfo() {
+
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 250, 100);
 		g.setColor(Color.BLACK);
 		g.fillRect(1350, 0, 500, 100);
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Tahoma", Font.BOLD, 30));
-		score = (ticks/10 );
-		
-		String pattern = "#.##";
-		DecimalFormat numberFormat = new DecimalFormat (pattern);
-		g.drawString("Score: " + numberFormat.format(score) + " " , 10, 40);
-		
-		
-	}
+		score = (ticks / 10);
 
+		String pattern = "#.##";
+		DecimalFormat numberFormat = new DecimalFormat(pattern);
+		g.drawString("Score: " + numberFormat.format(score) + " ", 10, 40);
+
+	}
+	
+	public void reset() {
+		for(int i = 0; i< DoodleBumpers.size(); i++) {
+			DoodleBumpers.remove(i);
+			}
+			for (int i = 0; i < 5; i++) {
+				DoodleBumpers.add(new DoodleBumper((int) (Math.random() * 800 + 100), (int) (Math.random() * 400 + 250)));
+
+			}
+			player = new Player(WIDTH / 2, HEIGHT - 250, 50, Color.green.darker());
+			player.setX(WIDTH/2);
+			player.setY(HEIGHT-250);
+			player.setDiameter(50);
+			player.setColor(Color.green.darker());
+			player.setInitialVelocity(bumperSpeed, 90);
+			score = 0;
+			ticks = 0;
+			die = false;
+			timer.start();
+	}
 
 	private class Keyboard implements KeyListener {
 		public void keyPressed(KeyEvent e) {
@@ -125,16 +143,20 @@ public void printInfo() {
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 				right = true;
 			}
+			if(e.getKeyCode() == KeyEvent.VK_R && die) {
+				reset();
+			}
+			
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
 			// TODO Auto-generated method stub
-			if(e.getKeyCode()==KeyEvent.VK_LEFT) {
-				left=false;
+			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				left = false;
 			}
-			if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
-				right=false;
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				right = false;
 			}
 		}
 
@@ -152,31 +174,37 @@ public void printInfo() {
 
 			// draw background / clear screen
 			GraphicsUtilities.drawBackground(g, LIGHT_BLUE, WIDTH, HEIGHT);
-			
-			if(ticks%15 == 0) {
-				DoodleBumpers.add(new DoodleBumper((int)(Math.random()*800+100), -200));
+			if (ticks % 15 == 0) {
+				DoodleBumpers.add(new DoodleBumper((int) (Math.random() * 800 + 100), -200));
 			}
 			end();
-			
-			if(player.getY() < bestY) {
-				for(int i = 0; i < DoodleBumpers.size(); i++) {
-					DoodleBumpers.get(i).move(HEIGHT, WIDTH, (int)((bestY - player.getY())/50));
+
+			if (player.getY() < bestY) {
+				for (int i = 0; i < DoodleBumpers.size(); i++) {
+					DoodleBumpers.get(i).move(HEIGHT, WIDTH, (int) ((bestY - player.getY()) / 50));
 				}
 			}
-			
-			for(int i = 0; i < DoodleBumpers.size(); i++) {
+
+			for (int i = 0; i < DoodleBumpers.size(); i++) {
 //				DoodleBumpers.get(i).move(HEIGHT, WIDTH);
 //				if(DoodleBumpers.get(i).getY()>HEIGHT) {
 //					DoodleBumpers.remove(i);
 //				}
-				player.Launch(WIDTH, HEIGHT, deltaTime, DoodleBumpers.get(i),bumperSpeed,90);
+				player.Launch(WIDTH, HEIGHT, deltaTime, DoodleBumpers.get(i), bumperSpeed, 90);
 			}
-
+//			for (int i = 0; i < DoodleBumpers.size(); i++) {
+//				if (player.getY() - player.getRadius() >= DoodleBumpers.get(i).getY() - 25
+//						&& player.getY() - player.getRadius() <= DoodleBumpers.get(i).getY()
+//						&& player.getX() + player.getRadius() >= DoodleBumpers.get(i).getX() && player.getX()
+//								- player.getRadius() <= DoodleBumpers.get(i).getX() + DoodleBumpers.get(i).getWidth()) {
+//					DoodleBumpers.remove(i);
+//				}
+//			}
 			player.draw(g);
-			for(int i = 0; i < DoodleBumpers.size(); i++) {
+			for (int i = 0; i < DoodleBumpers.size(); i++) {
 				DoodleBumpers.get(i).draw(g);
 			}
-			
+
 			updateMovement();
 			printInfo();
 			System.out.println(player.getYSpeed());
@@ -196,7 +224,7 @@ public void printInfo() {
 		frame.setSize(WIDTH, HEIGHT);
 		frame.setLocation(540, 0);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setContentPane(new Team29());
+		frame.setContentPane(new Team29WithDie());
 		frame.setVisible(true);
 	}
 
